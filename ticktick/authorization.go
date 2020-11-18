@@ -26,6 +26,8 @@ const (
 const (
 	defaultAuthURL  = "https://ticktick.com/oauth/authorize"
 	defaultTokenURL = "https://ticktick.com/oauth/token"
+
+	defaultRedirectAddr = "127.0.0.1:42548"
 )
 
 // OAuthConfig provides minimal OAuth configuraion in order to generate TickTick access token.
@@ -65,7 +67,7 @@ func tokenFromWeb(ctx context.Context, config *oauth2.Config) *oauth2.Token {
 	ch := make(chan string)
 
 	// ts := httptest.NewUnstartedServer(http.HandlerFunc(func(rw http.ResponseWriter, req *http.Request) {
-	ts, err := listenAndServe(":8000", http.HandlerFunc(func(rw http.ResponseWriter, req *http.Request) {
+	ts, err := listenAndServe(defaultRedirectAddr, http.HandlerFunc(func(rw http.ResponseWriter, req *http.Request) {
 		if req.URL.Path == "/favicon.ico" {
 			http.Error(rw, "", 404)
 			return
@@ -85,7 +87,7 @@ func tokenFromWeb(ctx context.Context, config *oauth2.Config) *oauth2.Token {
 	defer ts.Close()
 
 	// config.RedirectURL = ts.URL
-	config.RedirectURL = "http://127.0.0.1:8000"
+	config.RedirectURL = fmt.Sprintf("http://%s", defaultRedirectAddr)
 	authURL := config.AuthCodeURL("state", oauth2.AccessTypeOffline)
 
 	log.Printf("Authorize this app at: %s", authURL)
