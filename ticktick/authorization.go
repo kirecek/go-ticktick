@@ -20,7 +20,7 @@ import (
 // list of ticktick permission scopes.
 const (
 	ScopeReadTask  = "tasks:read"
-	ScopeReadWrite = "tasks:write"
+	ScopeWriteTask = "tasks:write"
 )
 
 const (
@@ -40,7 +40,7 @@ type OAuthConfig struct {
 }
 
 // NewOAuthClient creates a HTTP client authorized with TickTick API.
-func NewOAuthClient(ctx context.Context, config *OAuthConfig) *http.Client {
+func NewOAuthClient(ctx context.Context, config *OAuthConfig) *Client {
 	cfg := &oauth2.Config{
 		ClientID:     config.ClientID,
 		ClientSecret: config.ClientSecret,
@@ -60,7 +60,8 @@ func NewOAuthClient(ctx context.Context, config *OAuthConfig) *http.Client {
 		log.Printf("Using cached token %#v from %q", token, cacheFile)
 	}
 
-	return cfg.Client(ctx, token)
+	return NewClient(cfg.Client(ctx, token))
+	// return cfg.Client(ctx, token)
 }
 
 func tokenFromWeb(ctx context.Context, config *oauth2.Config) *oauth2.Token {

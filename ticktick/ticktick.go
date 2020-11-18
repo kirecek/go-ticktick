@@ -12,7 +12,7 @@ import (
 )
 
 const (
-	defaultBaseURL = "https://api.ticktick.com/"
+	defaultBaseURL = "https://api.ticktick.com/open/v1/"
 	userAgent      = "go-ticktick"
 )
 
@@ -27,6 +27,8 @@ type Client struct {
 	UserAgent string
 
 	common service // Reuse a single struct instead of allocating one for each service on the heap.
+
+	Tasks *TasksService
 }
 
 type service struct {
@@ -42,9 +44,17 @@ func NewClient(httpClient *http.Client) *Client {
 		httpClient = &http.Client{}
 	}
 	baseURL, _ := url.Parse(defaultBaseURL)
+	if !strings.HasSuffix(baseURL.Path, "/") {
+		baseURL.Path += "/"
+	}
+	if !strings.HasSuffix(baseURL.Path, "/open/v1/") {
+		baseURL.Path += "open/v1/"
+	}
 
 	c := &Client{client: httpClient, BaseURL: baseURL, UserAgent: userAgent}
 	c.common.client = c
+	c.Tasks = (*TasksService)(&c.common)
+
 	return c
 }
 

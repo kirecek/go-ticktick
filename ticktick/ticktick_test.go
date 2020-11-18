@@ -11,16 +11,18 @@ import (
 	"testing"
 )
 
+const baseURLPath = "/open/v1"
+
 func setup() (client *Client, mux *http.ServeMux, serverURL string, teardown func()) {
 	mux = http.NewServeMux()
 
 	apiHandler := http.NewServeMux()
-	apiHandler.Handle("/", mux)
+	apiHandler.Handle(baseURLPath+"/", http.StripPrefix(baseURLPath, mux))
 
 	server := httptest.NewServer(apiHandler)
 
 	client = NewClient(nil)
-	url, _ := url.Parse(server.URL + "/")
+	url, _ := url.Parse(server.URL + baseURLPath + "/")
 	client.BaseURL = url
 
 	return client, mux, server.URL, server.Close
@@ -49,7 +51,7 @@ func TestNewRequest(t *testing.T) {
 		Name string `json:"name"`
 	}
 
-	inURL, outURL := "/task", defaultBaseURL+"task"
+	inURL, outURL := "task", defaultBaseURL+"task"
 	inBody, outBody := &testTask{Name: "Test"}, `{"name":"Test"}`+"\n"
 	req, _ := c.NewRequest("GET", inURL, inBody)
 
@@ -132,5 +134,12 @@ func TestCheckResponse_badRequest(t *testing.T) {
 	want := &ErrorResponse{Response: res}
 	if !reflect.DeepEqual(err, want) {
 		t.Errorf("Error = %#v, want %#v", err, want)
+	}
+}
+
+func testMethod(t *testing.T, r *http.Request, want string) {
+	t.Helper()
+	if got := r.Method; got != want {
+		t.Errorf("Request method: %v, want %v", got, want)
 	}
 }
