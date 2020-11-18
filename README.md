@@ -24,7 +24,7 @@ import (
 )
 
 func main() {
-    ctx := context.Background()
+	ctx := context.Background()
 
 	authConfig := &ticktick.OAuthConfig{
 		Scopes:       []string{ticktick.ScopeReadTask, ticktick.ScopeWriteTask},
@@ -35,9 +35,9 @@ func main() {
 
 
 	task, _, err := client.Tasks.Create(ctx, &ticktick.Task{Title: "Finish go-ticktick client"})
-    if err != nil {
-        log.Fatal(err)
-    }
-    fmt.Println(task)
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println(task)
 }
 ```
