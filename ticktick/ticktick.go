@@ -96,7 +96,7 @@ func (c *Client) NewRequest(method, urlStr string, body interface{}) (*http.Requ
 
 // Do sends an API request and returns the API response.
 func (c *Client) Do(ctx context.Context, req *http.Request, v interface{}) (*http.Response, error) {
-	req.WithContext(ctx)
+	req = req.WithContext(ctx)
 
 	resp, err := c.client.Do(req)
 	if err != nil {
