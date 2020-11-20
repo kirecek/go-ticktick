@@ -1,0 +1,17 @@
+linters-settings:
+  gocyclo:
+    min-complexity: 30
+
+linters:
+  disable-all: true
+  enable:
+  - megacheck
+  - govet
+  - golint
+  - gocyclo
+  - unconvert
+  - dupl
+  - nakedret
+  - prealloc
+  - scopelint
+  - gocritic
