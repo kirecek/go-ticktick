@@ -10,15 +10,15 @@ Follow instructions at [ticktick developers portal](https://developer.ticktick.c
 
 > Use `http://127.0.0.1:42548` as **OAuth redirect URL** in a application settings.
 
-## Example
+## Examples
+
+### Auth
 
 ```go
 package main
 
 import (
 	"context"
-	"fmt"
-	"log"
 
 	"github.com/kirecek/go-ticktick/ticktick"
 )
@@ -32,12 +32,33 @@ func main() {
 		ClientSecret: "<client-secret>",
 	}
 	client := ticktick.NewOAuthClient(ctx, authConfig)
+}
+```
 
+### Get Task
 
-	task, _, err := client.Tasks.Create(ctx, &ticktick.Task{Title: "Finish go-ticktick client"})
-	if err != nil {
-		log.Fatal(err)
-	}
-	fmt.Println(task)
+```go
+task, _, err := client.Tasks.Get(ctx, "inbox", "<task-id>")
+if err != nil {
+	log.Fatal(err)
+}
+fmt.Println(task)
+```
+
+### Create task
+
+```go
+task, _, err := client.Tasks.Create(ctx, &ticktick.Task{Title: "Testing go-ticktick client"})
+if err != nil {
+	log.Fatal(err)
+}
+```
+
+### Complete task
+
+```go
+_, err := client.Tasks.Complete(ctx, task.ProjectID, task.ID)
+if err != nil {
+	log.Fatal(err)
 }
 ```
