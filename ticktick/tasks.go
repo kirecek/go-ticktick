@@ -56,9 +56,27 @@ func (s *TasksService) Create(ctx context.Context, task *Task) (*Task, *http.Res
 	return t, resp, nil
 }
 
-// Complete a task in a give project.
+// Update an existing task.
+func (s *TasksService) Update(ctx context.Context, taskID string, task *Task) (*Task, *http.Response, error) {
+	u := fmt.Sprintf("task/%s", taskID)
+
+	req, err := s.client.NewRequest("POST", u, task)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	t := new(Task)
+	resp, err := s.client.Do(ctx, req, t)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return t, resp, nil
+}
+
+// Complete a task in a given project.
 func (s *TasksService) Complete(ctx context.Context, projectID, taskID string) (*http.Response, error) {
-	u := fmt.Sprintf("project/%s/task/%s", projectID, taskID)
+	u := fmt.Sprintf("project/%s/task/%s/complete", projectID, taskID)
 	req, err := s.client.NewRequest("POST", u, nil)
 	if err != nil {
 		return nil, err
