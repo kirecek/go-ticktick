@@ -1,5 +1,8 @@
 # WIP: go-ticktick
 
+![GitHub Workflow Status](https://img.shields.io/github/workflow/status/kirecek/go-ticktick/Tests?label=tests&logo=github)
+[![Go Report Card](https://goreportcard.com/badge/github.com/kirecek/go-ticktick)](https://goreportcard.com/report/github.com/kirecek/go-ticktick)
+
 Golang client for [TickTick open API](https://developer.ticktick.com/docs/index.html#/openapi?id=ticktick-open-api).
 
 > this is unofficial, experimental ticktick Go client library.
