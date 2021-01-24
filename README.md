@@ -1,8 +1,10 @@
-# go-ticktick
+# WIP: go-ticktick
 
 Golang client for [TickTick open API](https://developer.ticktick.com/docs/index.html#/openapi?id=ticktick-open-api).
 
-**WIP** This client is under development and at the same time, it's blocked by incomplete ticktick API.
+> this is unofficial, experimental ticktick Go client library.
+
+> TickTick API is missing a lot of functionality, therefore adding new methods and features to this library is very limited. Please check their RESP API [support ticket](http://help.ticktick.com/forum/topic/393284) for more information ... maybe and also add +1 to increase demand :)
 
 ## Get access token
 
